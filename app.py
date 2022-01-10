@@ -66,7 +66,7 @@ class Worker(Thread):
         print(self.name, 'started')
 
     def run(self):
-        # event.wait()
+        event.wait()
         while not self.queue.empty():
             pokemon = self.queue.get()
             print(self.name, pokemon)
@@ -77,8 +77,8 @@ class Worker(Thread):
             self._target(pokemon)
 
 
-run()
 print(queue.queue)
 print('start')
 th = Worker(target=target, queue=queue, name='Worker 1')
 th.start()
+run()
