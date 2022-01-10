@@ -46,7 +46,7 @@ target = pipeline(get_sprite_url, download_sprite)
 
 
 event = Event()
-queue = Queue(maxsize=101)
+queue = Queue()
 
 
 def run():
@@ -77,8 +77,12 @@ class Worker(Thread):
             self._target(pokemon)
 
 
+def get_pool(n_th: int):
+    return [Worker(target=target, queue=queue, name=f'Worker {n}') for n in range(n_th)]
+
+
 print(queue.queue)
 print('start')
-th = Worker(target=target, queue=queue, name='Worker 1')
-th.start()
+ths = get_pool(25)
+[th.start() for th in ths]
 run()
